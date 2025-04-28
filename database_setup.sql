@@ -1,7 +1,6 @@
--- File: database_setup.sql
 -- Create the database (if not using an existing one)
-CREATE DATABASE IF NOT EXISTS school_management;
-USE school_management;
+-- CREATE DATABASE IF NOT EXISTS school_management;
+-- USE school_management;
 
 -- Create the schools table
 CREATE TABLE IF NOT EXISTS schools (

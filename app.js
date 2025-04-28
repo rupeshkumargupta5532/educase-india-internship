@@ -15,13 +15,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Database connection pool
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || "127.0.0.1",
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASSWORD || "",
-  database: process.env.DB_NAME || "school_management",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
+  ssl: {
+    rejectUnauthorized: true,
+  },
 });
 
 // Test database connection
@@ -53,6 +56,22 @@ async function initializeDatabase() {
       )
     `);
 
+    // Check if table is empty and add sample data if needed
+    const [rows] = await connection.query(
+      "SELECT COUNT(*) as count FROM schools"
+    );
+    if (rows[0].count === 0) {
+      // Add sample data
+      await connection.query(`
+        INSERT INTO schools (name, address, latitude, longitude) VALUES
+        ('Washington High School', '1234 Washington St, Seattle, WA', 47.6062, -122.3321),
+        ('Lincoln Elementary', '5678 Lincoln Ave, Portland, OR', 45.5152, -122.6784),
+        ('Jefferson Middle School', '9012 Jefferson Blvd, San Francisco, CA', 37.7749, -122.4194),
+        ('Roosevelt Academy', '3456 Roosevelt Way, Los Angeles, CA', 34.0522, -118.2437),
+        ('Kennedy High', '7890 Kennedy Rd, San Diego, CA', 32.7157, -117.1611)
+      `);
+    }
+
     console.log("Database initialized successfully");
     connection.release();
   } catch (error) {
@@ -60,7 +79,6 @@ async function initializeDatabase() {
     process.exit(1);
   }
 }
-
 // Calculate the distance between two geographical coordinates using the Haversine formula
 function calculateDistance(lat1, lon1, lat2, lon2) {
   const R = 6371; // Earth's radius in kilometers
