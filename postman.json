@@ -1,0 +1,222 @@
+{
+    "info": {
+      "name": "School Management API",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Add School",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "url": {
+            "raw": "{{base_url}}/addSchool",
+            "host": ["{{base_url}}"],
+            "path": ["addSchool"]
+          },
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"name\": \"Central High School\",\n    \"address\": \"123 Main St, Denver, CO\",\n    \"latitude\": 39.7392,\n    \"longitude\": -104.9903\n}"
+          },
+          "description": "Adds a new school to the database"
+        },
+        "response": [
+          {
+            "name": "Successful Response",
+            "originalRequest": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "url": {
+                "raw": "{{base_url}}/addSchool",
+                "host": ["{{base_url}}"],
+                "path": ["addSchool"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"name\": \"Central High School\",\n    \"address\": \"123 Main St, Denver, CO\",\n    \"latitude\": 39.7392,\n    \"longitude\": -104.9903\n}"
+              }
+            },
+            "status": "Created",
+            "code": 201,
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ],
+            "body": "{\n    \"success\": true,\n    \"message\": \"School added successfully\",\n    \"schoolId\": 6\n}"
+          },
+          {
+            "name": "Validation Error Response",
+            "originalRequest": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "url": {
+                "raw": "{{base_url}}/addSchool",
+                "host": ["{{base_url}}"],
+                "path": ["addSchool"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"name\": \"\",\n    \"address\": \"123 Main St\",\n    \"latitude\": \"invalid\",\n    \"longitude\": -104.9903\n}"
+              }
+            },
+            "status": "Bad Request",
+            "code": 400,
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ],
+            "body": "{\n    \"success\": false,\n    \"errors\": [\n        \"Name is required and must be a non-empty string\",\n        \"Latitude is required and must be a valid number\"\n    ]\n}"
+          }
+        ]
+      },
+      {
+        "name": "List Schools",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "{{base_url}}/listSchools?latitude=40.7128&longitude=-74.0060",
+            "host": ["{{base_url}}"],
+            "path": ["listSchools"],
+            "query": [
+              {
+                "key": "latitude",
+                "value": "40.7128"
+              },
+              {
+                "key": "longitude",
+                "value": "-74.0060"
+              }
+            ]
+          },
+          "description": "Lists all schools sorted by proximity to the specified location"
+        },
+        "response": [
+          {
+            "name": "Successful Response",
+            "originalRequest": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/listSchools?latitude=40.7128&longitude=-74.0060",
+                "host": ["{{base_url}}"],
+                "path": ["listSchools"],
+                "query": [
+                  {
+                    "key": "latitude",
+                    "value": "40.7128"
+                  },
+                  {
+                    "key": "longitude",
+                    "value": "-74.0060"
+                  }
+                ]
+              }
+            },
+            "status": "OK",
+            "code": 200,
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ],
+            "body": "{\n    \"success\": true,\n    \"count\": 5,\n    \"schools\": [\n        {\n            \"id\": 1,\n            \"name\": \"Washington High School\",\n            \"address\": \"1234 Washington St, Seattle, WA\",\n            \"latitude\": 47.6062,\n            \"longitude\": -122.3321,\n            \"created_at\": \"2023-09-15T12:34:56.000Z\",\n            \"distance\": 3893.45\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Lincoln Elementary\",\n            \"address\": \"5678 Lincoln Ave, Portland, OR\",\n            \"latitude\": 45.5152,\n            \"longitude\": -122.6784,\n            \"created_at\": \"2023-09-15T12:35:23.000Z\",\n            \"distance\": 3912.72\n        },\n        {\n            \"id\": 3,\n            \"name\": \"Jefferson Middle School\",\n            \"address\": \"9012 Jefferson Blvd, San Francisco, CA\",\n            \"latitude\": 37.7749,\n            \"longitude\": -122.4194,\n            \"created_at\": \"2023-09-15T12:36:05.000Z\",\n            \"distance\": 4139.56\n        },\n        {\n            \"id\": 4,\n            \"name\": \"Roosevelt Academy\",\n            \"address\": \"3456 Roosevelt Way, Los Angeles, CA\",\n            \"latitude\": 34.0522,\n            \"longitude\": -118.2437,\n            \"created_at\": \"2023-09-15T12:36:42.000Z\",\n            \"distance\": 3935.77\n        },\n        {\n            \"id\": 5,\n            \"name\": \"Kennedy High\",\n            \"address\": \"7890 Kennedy Rd, San Diego, CA\",\n            \"latitude\": 32.7157,\n            \"longitude\": -117.1611,\n            \"created_at\": \"2023-09-15T12:37:18.000Z\",\n            \"distance\": 3927.84\n        }\n    ]\n}"
+          },
+          {
+            "name": "Invalid Parameters Response",
+            "originalRequest": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/listSchools?latitude=invalid&longitude=-74.0060",
+                "host": ["{{base_url}}"],
+                "path": ["listSchools"],
+                "query": [
+                  {
+                    "key": "latitude",
+                    "value": "invalid"
+                  },
+                  {
+                    "key": "longitude",
+                    "value": "-74.0060"
+                  }
+                ]
+              }
+            },
+            "status": "Bad Request",
+            "code": 400,
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ],
+            "body": "{\n    \"success\": false,\n    \"message\": \"Invalid coordinates provided. Latitude must be between -90 and 90, longitude between -180 and 180\"\n}"
+          }
+        ]
+      },
+      {
+        "name": "API Information",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "{{base_url}}/",
+            "host": ["{{base_url}}"],
+            "path": [""]
+          },
+          "description": "Returns information about available API endpoints"
+        },
+        "response": [
+          {
+            "name": "API Information Response",
+            "originalRequest": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/",
+                "host": ["{{base_url}}"],
+                "path": [""]
+              }
+            },
+            "status": "OK",
+            "code": 200,
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ],
+            "body": "{\n    \"message\": \"School Management API\",\n    \"endpoints\": [\n        {\n            \"path\": \"/addSchool\",\n            \"method\": \"POST\",\n            \"description\": \"Add a new school\",\n            \"payload\": {\n                \"name\": \"string (required)\",\n                \"address\": \"string (required)\",\n                \"latitude\": \"number (required, between -90 and 90)\",\n                \"longitude\": \"number (required, between -180 and 180)\"\n            }\n        },\n        {\n            \"path\": \"/listSchools\",\n            \"method\": \"GET\",\n            \"description\": \"List all schools sorted by proximity to specified location\",\n            \"parameters\": {\n                \"latitude\": \"number (required, between -90 and 90)\",\n                \"longitude\": \"number (required, between -180 and 180)\"\n            }\n        }\n    ]\n}"
+          }
+        ]
+      }
+    ],
+    "variable": [
+      {
+        "key": "base_url",
+        "value": "http://localhost:3000",
+        "type": "string"
+      }
+    ]
+  }
